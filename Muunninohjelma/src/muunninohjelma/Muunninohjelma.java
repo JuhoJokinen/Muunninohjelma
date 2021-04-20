@@ -11,25 +11,30 @@ public class Muunninohjelma extends JFrame{
     
 
     public Muunninohjelma() {
+        //ikkunan luonti tehdään mutkan kautta jottei tapahdu virheitä
         teeIkkuna();    
     }
     
     private void teeIkkuna(){
+        //ikkunan ja yläpaneelin luonti
         setUndecorated(true);
         setSize(1000,600);
         Border raja = BorderFactory.createLineBorder(Color.BLACK);
         JMenuBar ylaPaneeli = new JMenuBar();
         ylaPaneeli.setBorder(raja);
         
+        //nappien alustamista
         JButton suljeNappi = new JButton("X");
-        JButton minimoi = new JButton("-");
+        JButton minimoi = new JButton("--");
         JButton maximoi = new JButton("[]");
         JButton asetukset = new JButton("Asetukset");
         JButton ohjeet = new JButton("Ohjeet");
         JLabel titteli = new JLabel("Muunninohjelma");
         
+        //ohjelman sulkeminen
         suljeNappi.addActionListener((event) -> System.exit(0));
         
+        //nappien sijoittaminen yläpaneeliin
         ylaPaneeli.add(asetukset);
         ylaPaneeli.add(ohjeet);
         ylaPaneeli.add(Box.createHorizontalGlue());
@@ -39,7 +44,7 @@ public class Muunninohjelma extends JFrame{
         ylaPaneeli.add(maximoi);
         ylaPaneeli.add(suljeNappi);
         
-        this.add(ylaPaneeli, BorderLayout.PAGE_START);
+        add(ylaPaneeli, BorderLayout.PAGE_START);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         
