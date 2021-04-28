@@ -8,6 +8,7 @@ import javax.swing.border.Border;
 
 public class Muunninohjelma extends JFrame{
     
+    private static Point point = new Point();
     
 
     public Muunninohjelma() {
@@ -32,7 +33,34 @@ public class Muunninohjelma extends JFrame{
         JLabel titteli = new JLabel("Muunninohjelma");
         
         //ohjelman sulkeminen
-        suljeNappi.addActionListener((event) -> System.exit(0));
+        suljeNappi.addActionListener((e) -> System.exit(0));
+        
+        //ruudun maximointi ja palauttaminen
+        maximoi.addActionListener((e) -> {        
+            Dimension ruutukoko =  Toolkit.getDefaultToolkit().getScreenSize();
+            
+            if( ruutukoko.equals(getSize())){
+                setSize(1000, 600);
+            } else {
+                setSize(ruutukoko.width, ruutukoko.height);
+            }
+        });
+        
+        //ikkunan siirtelyä yläpaneelista
+        ylaPaneeli.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                point.x = e.getX();
+                point.y = e.getY();
+            }
+        });
+
+        ylaPaneeli.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                Point p = getLocation();
+                setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
+            }
+        });
+        
         
         //nappien sijoittaminen yläpaneeliin
         ylaPaneeli.add(asetukset);
