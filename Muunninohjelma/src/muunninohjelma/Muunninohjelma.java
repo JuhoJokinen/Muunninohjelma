@@ -37,6 +37,8 @@ public class Muunninohjelma extends JFrame{
         JButton asetukset = new JButton("Asetukset");
         JButton ohjeet = new JButton("Ohjeet");
         JLabel titteli = new JLabel("Muunninohjelma");
+        JButton lisaaRivi = new JButton("placeholder");
+        JScrollPane vieritys = new JScrollPane(keskiPaneeli);
 
         //asetukset-ikkuna
         asetukset.addActionListener(new ActionListener(){
@@ -101,8 +103,23 @@ public class Muunninohjelma extends JFrame{
                 setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
             }
         });
-
         
+        vieritys.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        
+        
+        
+        //komponentin lisääminen dynaamisesti
+        lisaaRivi.addActionListener((e) -> {
+            JLabel testi = new JLabel("testi");
+            keskiPaneeli.add(testi);
+            keskiPaneeli.add(lisaaRivi);
+            keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
+            keskiPaneeli.add(Box.createVerticalGlue());
+            keskiPaneeli.revalidate();
+        
+        });
+    
+    
         //nappien sijoittaminen yläpaneeliin
         ylaPaneeli.add(asetukset);
         ylaPaneeli.add(ohjeet);
@@ -113,20 +130,27 @@ public class Muunninohjelma extends JFrame{
         ylaPaneeli.add(maximoi);
         ylaPaneeli.add(suljeNappi);
         
+        //keskipaneelin layout
+        keskiPaneeli.setLayout(new BoxLayout(keskiPaneeli, BoxLayout.PAGE_AXIS));
+        keskiPaneeli.add(Box.createVerticalGlue());
+        keskiPaneeli.add(lisaaRivi);
+        keskiPaneeli.add(Box.createVerticalGlue());
+        lisaaRivi.setAlignmentX(CENTER_ALIGNMENT);
+        
+        
         add(ylaPaneeli, BorderLayout.PAGE_START);
-        add(keskiPaneeli, BorderLayout.CENTER);
+        add(vieritys, BorderLayout.CENTER);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         
-    }
-    
+    }   
     
     public static void main(String[] args) {
+        
         Muunninohjelma ikkuna = new Muunninohjelma();
         ikkuna.setVisible(true);
         
-        
-        
-    }
+               
+    }   
     
 }
