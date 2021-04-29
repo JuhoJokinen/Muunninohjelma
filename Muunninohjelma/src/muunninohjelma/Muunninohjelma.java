@@ -25,7 +25,10 @@ public class Muunninohjelma extends JFrame{
         setSize(1000,600);
         Border raja = BorderFactory.createLineBorder(Color.BLACK);
         JMenuBar ylaPaneeli = new JMenuBar();
+        JPanel keskiPaneeli = new JPanel();
+        keskiPaneeli.setBackground(Color.WHITE);
         ylaPaneeli.setBorder(raja);
+        rootPane.setBorder(raja);
         
         //nappien alustamista
         JButton suljeNappi = new JButton("X");
@@ -71,14 +74,17 @@ public class Muunninohjelma extends JFrame{
         suljeNappi.addActionListener((e) -> System.exit(0));
         
         //ruudun maximointi ja palauttaminen
-        maximoi.addActionListener((e) -> {        
-            Dimension ruutukoko =  Toolkit.getDefaultToolkit().getScreenSize();
-            
-            if( ruutukoko.equals(getSize())){
-                setSize(1000, 600);
+        maximoi.addActionListener((e) -> {                   
+            if(getExtendedState() == Frame.MAXIMIZED_BOTH){
+                setExtendedState(NORMAL);
             } else {
-                setSize(ruutukoko.width, ruutukoko.height);
+                setExtendedState(MAXIMIZED_BOTH);
             }
+        });
+        
+        //Ohjelman minimointi taskbaariin
+        minimoi.addActionListener((e) ->{
+            setState(ICONIFIED);
         });
         
         //ikkunan siirtelyä yläpaneelista
@@ -95,7 +101,7 @@ public class Muunninohjelma extends JFrame{
                 setLocation(p.x + e.getX() - point.x, p.y + e.getY() - point.y);
             }
         });
-        
+
         
         //nappien sijoittaminen yläpaneeliin
         ylaPaneeli.add(asetukset);
@@ -108,6 +114,7 @@ public class Muunninohjelma extends JFrame{
         ylaPaneeli.add(suljeNappi);
         
         add(ylaPaneeli, BorderLayout.PAGE_START);
+        add(keskiPaneeli, BorderLayout.CENTER);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
         
