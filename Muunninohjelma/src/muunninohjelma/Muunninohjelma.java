@@ -9,6 +9,8 @@ import javax.swing.border.Border;
 public class Muunninohjelma extends JFrame{
     
     private static Point point = new Point();
+    private Font fontti = new Font("dialog", Font.PLAIN, 12);
+    private int fonttiValinta = 2;
     
 
     public Muunninohjelma() {
@@ -37,9 +39,9 @@ public class Muunninohjelma extends JFrame{
         JButton asetukset = new JButton("Asetukset");
         JButton ohjeet = new JButton("Ohjeet");
         JLabel titteli = new JLabel("Muunninohjelma");
-        JButton lisaaRivi = new JButton("placeholder");
+        JButton lisaaRivi = new JButton("placeholder");       
         JScrollPane vieritys = new JScrollPane(keskiPaneeli);
-
+        
         //asetukset-ikkuna
         asetukset.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -53,13 +55,20 @@ public class Muunninohjelma extends JFrame{
                 asetusPaneeli.add(merkNumValikko);
 
                 asetusPaneeli.add(new JLabel("Fonttikoko"));
-                String [] fonttiKokoLista = {"8", "10", "12", "14", "16", "20", "24"};
-                JComboBox<String> fonttiKokoValikko = new JComboBox<String>(fonttiKokoLista);
-                fonttiKokoValikko.setSelectedIndex(2);
+                Integer [] fonttiKokoLista = {8, 10, 12, 14, 16, 20, 24};
+                JComboBox<Integer> fonttiKokoValikko = new JComboBox<Integer>(fonttiKokoLista);
+                fonttiKokoValikko.setSelectedIndex(fonttiValinta);
                 asetusPaneeli.add(fonttiKokoValikko);
 
                 Object [] valinnat = {"Tallenna ja sulje", "Sulje"};
-                JOptionPane.showOptionDialog(frame, asetusPaneeli, "Asetukset", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, valinnat, valinnat[0]);
+                int valinta = JOptionPane.showOptionDialog(frame, asetusPaneeli, "Asetukset", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, valinnat, valinnat[0]);
+                if(valinta == 0){
+                    int fonttiKoko = fonttiKokoValikko.getItemAt(fonttiKokoValikko.getSelectedIndex());
+                    fonttiValinta = fonttiKokoValikko.getSelectedIndex();//uuden fonttikoon paikka listassa
+                    fontti = new Font("dialog", Font.PLAIN, fonttiKoko);//luodaan uusi fontti
+                    muutaFontti(keskiPaneeli);//uusi fontti asetetaan kaikkiin keskipaneelissa oleviin komponentteihin
+                                      
+                }
             }
         });
         
@@ -67,8 +76,11 @@ public class Muunninohjelma extends JFrame{
         ohjeet.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 Object [] valinnat = {"Sulje"};
-                JOptionPane.showOptionDialog(frame, "Ohjelmaa käytetään syöttämällä luku alkuarvo-\nkenttään, valitsemalla sille yksikkö valikosta ja\nvalitsemalla loppuyksikölle tyyppi.\n\nPainamalla plus-merkkiä voi lisätä uuden rivin, johon\nvoi laittaa muita arvoja muutettavaksi. Rivin oikeassa\nyläkulmassa on raksi, josta rivin voi poistaa.", 
-                "Ohjeet", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, valinnat, valinnat[0]);
+                String viesti = "Ohjelmaa käytetään syöttämällä luku alkuarvon kenttään, valitsemalla sille yksikkö valikosta ja valitsemalla loppuyksikölle tyyppi. Painamalla plus-merkkiä voi lisätä uuden rivin, johon voi laittaa muita arvoja muutettavaksi. Rivin oikeassa yläkulmassa on raksi, josta rivin voi poistaa.";
+                JLabel teksti = new JLabel("<html><p style=\"width:400px\">"+viesti+"</p></html>");//asettaa tekstirivin maksimileveyden neljäänsataan pixeliin
+                teksti.setFont(fontti);
+                JOptionPane.showOptionDialog(frame, teksti, "Ohjeet", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, valinnat, valinnat[0]);
+                
             }
         });
         
@@ -111,6 +123,7 @@ public class Muunninohjelma extends JFrame{
         //komponentin lisääminen dynaamisesti
         lisaaRivi.addActionListener((e) -> {
             JLabel testi = new JLabel("testi");
+            testi.setFont(fontti);
             keskiPaneeli.add(testi);
             keskiPaneeli.add(lisaaRivi);
             keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -153,4 +166,16 @@ public class Muunninohjelma extends JFrame{
                
     }   
     
+    //rekursiivisesti vaihtaa komponentin sisällön fonttikoon. 
+    //kopioitu verkosta
+    public void muutaFontti(Component component){       
+    component.setFont(fontti);
+    
+    if(component instanceof Container){
+        for(Component child:((Container)component).getComponents())
+        {
+            muutaFontti(child);
+        }
+    }
+    }
 }
