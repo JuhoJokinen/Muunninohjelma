@@ -110,8 +110,8 @@ public class Muunninohjelma extends JFrame{
         
         //komponentin lisääminen dynaamisesti
         lisaaRivi.addActionListener((e) -> {
-            JLabel testi = new JLabel("testi");
-            keskiPaneeli.add(testi);
+            JPanel rivi = new Muunnosrivi();
+            keskiPaneeli.add(rivi);
             keskiPaneeli.add(lisaaRivi);
             keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
             keskiPaneeli.add(Box.createVerticalGlue());
