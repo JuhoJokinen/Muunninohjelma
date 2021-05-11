@@ -6,8 +6,17 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Muunnosrivi extends JPanel{
+import java.text.*;
+import javax.swing.text.*;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+
+public class Muunnosrivi extends JPanel implements PropertyChangeListener{
+
+    public JFormattedTextField alkuArvoKentta;
+    public JTextField loppuArvoKentta;
+    
     public Muunnosrivi() {
 
         setBackground(Color.WHITE);
@@ -16,14 +25,22 @@ public class Muunnosrivi extends JPanel{
         JPanel vasenPaneeli = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         vasenPaneeli.setBackground(Color.WHITE);
         vasenPaneeli.setBorder(raja);
-
+        
+        NumberFormat format = new DecimalFormat("###.####");
+        NumberFormatter formatter = new NumberFormatter(format);
+        formatter.setValueClass(Double.class);
+        formatter.setAllowsInvalid(true);
+        formatter.setCommitsOnValidEdit(true);
+               
         //tekstikenttä alkuarvolle
-        JTextField alkuArvoKentta = new JTextField(10) {
+        alkuArvoKentta =  new JFormattedTextField(formatter) {
             //reunan poisto
             @Override
             public void setBorder(Border border){
             }
         };
+        alkuArvoKentta.setColumns(10);
+        alkuArvoKentta.addPropertyChangeListener("value", this);
         vasenPaneeli.add(alkuArvoKentta);
 
         //alkuarvon yksikön valinta
@@ -52,7 +69,7 @@ public class Muunnosrivi extends JPanel{
         oikeaPaneeli.setBorder(raja);
 
         //tekstikenttä loppuarvolle
-        JTextField loppuArvoKentta = new JTextField(10) {
+        loppuArvoKentta = new JTextField(10) {
             //reunan poisto
             @Override
             public void setBorder(Border border){
@@ -140,5 +157,13 @@ public class Muunnosrivi extends JPanel{
             return null;
         }
     }
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        double arvo = (double)alkuArvoKentta.getValue();
+        
+        double loppuarvo = arvo*2;
+        loppuArvoKentta.setText(String.valueOf(loppuarvo));
+    } 
 
 }

@@ -147,7 +147,10 @@ public class Muunninohjelma extends JFrame{
         //keskipaneelin layout
         keskiPaneeli.setLayout(new BoxLayout(keskiPaneeli, BoxLayout.PAGE_AXIS));
         keskiPaneeli.add(Box.createVerticalGlue());
+        JPanel rivi = new Muunnosrivi();
+        keskiPaneeli.add(rivi);
         keskiPaneeli.add(lisaaRivi);
+        keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
         keskiPaneeli.add(Box.createVerticalGlue());
         lisaaRivi.setAlignmentX(CENTER_ALIGNMENT);
         
@@ -173,8 +176,7 @@ public class Muunninohjelma extends JFrame{
     component.setFont(fontti);
     
     if(component instanceof Container){
-        for(Component child:((Container)component).getComponents())
-        {
+        for(Component child:((Container)component).getComponents()){
             muutaFontti(child);
         }
     }
