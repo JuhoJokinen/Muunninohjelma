@@ -12,6 +12,8 @@ import javax.swing.text.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 
 public class Muunnosrivi extends JPanel implements PropertyChangeListener{
@@ -144,13 +146,37 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
         loppuYksikkoValikko.setPrototypeDisplayValue("   kilometriä tunnissa"); //valikon leveyden säätö pisimmän mahdollisen arvon mukaan
         oikeaPaneeli.add(loppuYksikkoValikko);
         
-        loppuYksikkoValikko.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+        //kuunnellaan milloin käyttäjä valitsee loppuyksikön ja tehdään muunnos
+        loppuYksikkoValikko.addPopupMenuListener(new PopupMenuListener(){
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {                
+            }
+            
+            @Override
+             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 muunnos();
             }
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {                
+            }       
         });
         
-        
+        alkuYksikkoValikko.addPopupMenuListener(new PopupMenuListener(){
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {                
+            }
+            
+            @Override
+             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                muunnos();
+            }
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {                
+            }       
+        });
+               
         add(oikeaPaneeli);
 
         //Poista rivi -nappi
@@ -191,7 +217,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
         double arvo = (double)alkuArvoKentta.getValue();
         double valiArvo = 0;
         double loppuArvo = 0;
-        
+        //muuttaa syötetyn arvon väliarvoksi
         switch (alkuYksikkoValikko.getSelectedIndex()) {
                     case 1:
                         valiArvo = arvo * 1000;//km -> m
@@ -251,7 +277,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                         valiArvo = 0;
                                                
                 }
-        
+        //valiarvo muutetaan loppuarvoksi.
         switch (loppuYksikkoValikko.getItemAt(loppuYksikkoValikko.getSelectedIndex())) {
                     case "   kilometri":
                         loppuArvo = valiArvo / 1000;
@@ -311,7 +337,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                         loppuArvo = 0;
                         break;
                 }
-        
+        //lopputulos näytetään käyttäjälle halutulla tarkkuudella
         loppuArvoKentta.setText(String.format("%.4f", (double)loppuArvo));
 
     } 
