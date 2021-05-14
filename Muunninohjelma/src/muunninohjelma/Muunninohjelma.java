@@ -123,12 +123,13 @@ public class Muunninohjelma extends JFrame{
         //komponentin lisääminen dynaamisesti
         lisaaRivi.addActionListener((e) -> {
 
-            JPanel rivi = new Muunnosrivi();
+            JPanel rivi = new Muunnosrivi();            
             keskiPaneeli.add(rivi);
 
             keskiPaneeli.add(lisaaRivi);
             keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
             keskiPaneeli.add(Box.createVerticalGlue());
+            muutaFontti(keskiPaneeli);
             keskiPaneeli.revalidate();
         
         });
@@ -153,6 +154,7 @@ public class Muunninohjelma extends JFrame{
         keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
         keskiPaneeli.add(Box.createVerticalGlue());
         lisaaRivi.setAlignmentX(CENTER_ALIGNMENT);
+        muutaFontti(keskiPaneeli);
         
         
         add(ylaPaneeli, BorderLayout.PAGE_START);
