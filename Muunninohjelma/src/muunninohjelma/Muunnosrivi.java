@@ -21,7 +21,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
     public JComboBox<String> alkuYksikkoValikko;
     public JComboBox<String> loppuYksikkoValikko;
     
-    public Muunnosrivi() {
+    public Muunnosrivi(JFrame paaIkkuna) {
 
         setBackground(Color.WHITE);
         Border raja = BorderFactory.createLineBorder(Color.BLACK);
@@ -140,10 +140,8 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
             }
             
         });
-        
-        
-        //valikon leveyden säätö pisimmän mahdollisen arvon mukaan
-        loppuYksikkoValikko.setPrototypeDisplayValue("   kilometriä tunnissa");
+
+        loppuYksikkoValikko.setPrototypeDisplayValue("   kilometriä tunnissa"); //valikon leveyden säätö pisimmän mahdollisen arvon mukaan
         oikeaPaneeli.add(loppuYksikkoValikko);
         
         loppuYksikkoValikko.addMouseListener(new MouseAdapter() {
@@ -157,8 +155,19 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
 
         //Poista rivi -nappi
         ImageIcon poistaIkoni = createImageIcon("images\\poista.png", "poista rivi");
-        JLabel poista = new JLabel(poistaIkoni);
+        JButton poista = new JButton(poistaIkoni);
         poista.setToolTipText("Poista rivi");
+        poista.setFocusPainted(false);
+        poista.setMargin(new Insets(0, 0, 0, 0));
+        poista.setContentAreaFilled(false);
+        poista.setBorderPainted(false);
+        poista.setOpaque(false);
+        poista.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                setVisible(false);
+                naytaPoistoIlmoitus(paaIkkuna);
+            }
+        });
         add(poista);
 
     }
@@ -304,6 +313,56 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                 }
         
         loppuArvoKentta.setText(String.format("%.4f", (double)loppuArvo));
+
+    } 
+    
+    //ilmoituksen näyttäminen rivin poistosta ja kumoamistoiminto
+    private void naytaPoistoIlmoitus(JFrame paaIkkuna){
+        JFrame poistoIlmoitus = new JFrame();
+        poistoIlmoitus.setLayout(new BoxLayout(poistoIlmoitus.getContentPane(), BoxLayout.PAGE_AXIS));
+        poistoIlmoitus.setUndecorated(true);
+        poistoIlmoitus.setSize(200, 100);
+        
+        //ilmoituksen sijainnin määrittely
+        Rectangle r = paaIkkuna.getBounds();
+        int x = paaIkkuna.getLocationOnScreen().x;
+        int y = paaIkkuna.getLocationOnScreen().y;
+        poistoIlmoitus.setLocation(x+20, y+r.height-120);
+        
+        JLabel teksti = new JLabel("Rivi poistettu");
+        JButton kumoa = new JButton("Kumoa");
+        
+        poistoIlmoitus.add(Box.createVerticalGlue());
+        poistoIlmoitus.add(teksti);
+        teksti.setAlignmentX(CENTER_ALIGNMENT);
+        poistoIlmoitus.add(Box.createVerticalGlue());
+        poistoIlmoitus.add(kumoa);
+        kumoa.setAlignmentX(CENTER_ALIGNMENT);
+        poistoIlmoitus.add(Box.createVerticalGlue());
+        
+        kumoa.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                setVisible(true);
+                poistoIlmoitus.dispose();
+            }
+        });
+        
+        poistoIlmoitus.setVisible(true);
+        poistoIlmoitus.setAlwaysOnTop(true);
+        
+        //sulkeutuminen 5 sekunnissa
+        new Thread(){
+            @Override
+            public void run(){
+                try{
+                    Thread.sleep(5000);
+                    poistoIlmoitus.dispose();
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            };
+        }.start();
+        
     }
 
 }

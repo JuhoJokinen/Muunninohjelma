@@ -39,8 +39,16 @@ public class Muunninohjelma extends JFrame{
         JButton asetukset = new JButton("Asetukset");
         JButton ohjeet = new JButton("Ohjeet");
         JLabel titteli = new JLabel("Muunninohjelma");
-        JButton lisaaRivi = new JButton("placeholder");       
         JScrollPane vieritys = new JScrollPane(keskiPaneeli);
+        
+        ImageIcon lisaaIkoni = createImageIcon("images\\lisaa.png", "lisää rivi");
+        JButton lisaaRivi = new JButton(lisaaIkoni);
+        lisaaRivi.setToolTipText("Lisää muunnosrivi");
+        lisaaRivi.setFocusPainted(false);
+        lisaaRivi.setMargin(new Insets(0, 0, 0, 0));
+        lisaaRivi.setContentAreaFilled(false);
+        lisaaRivi.setBorderPainted(false);
+        lisaaRivi.setOpaque(false);
         
         //asetukset-ikkuna
         asetukset.addActionListener(new ActionListener(){
@@ -123,7 +131,7 @@ public class Muunninohjelma extends JFrame{
         //komponentin lisääminen dynaamisesti
         lisaaRivi.addActionListener((e) -> {
 
-            JPanel rivi = new Muunnosrivi();            
+            JPanel rivi = new Muunnosrivi(frame);
             keskiPaneeli.add(rivi);
 
             keskiPaneeli.add(lisaaRivi);
@@ -148,7 +156,7 @@ public class Muunninohjelma extends JFrame{
         //keskipaneelin layout
         keskiPaneeli.setLayout(new BoxLayout(keskiPaneeli, BoxLayout.PAGE_AXIS));
         keskiPaneeli.add(Box.createVerticalGlue());
-        JPanel rivi = new Muunnosrivi();
+        JPanel rivi = new Muunnosrivi(frame);
         keskiPaneeli.add(rivi);
         keskiPaneeli.add(lisaaRivi);
         keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -182,5 +190,15 @@ public class Muunninohjelma extends JFrame{
             muutaFontti(child);
         }
     }
+    }
+    
+    protected ImageIcon createImageIcon(String polku, String kuvaus) {
+        java.net.URL url = getClass().getResource(polku);
+        if(url != null) {
+            return new ImageIcon(url, kuvaus);
+        } else {
+            System.err.println("Tiedostoa " + polku + " ei löytynyt");
+            return null;
+        }
     }
 }
