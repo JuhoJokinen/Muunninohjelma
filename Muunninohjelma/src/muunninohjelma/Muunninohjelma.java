@@ -11,6 +11,8 @@ public class Muunninohjelma extends JFrame{
     private static Point point = new Point();
     private Font fontti = new Font("dialog", Font.PLAIN, 12);
     private int fonttiValinta = 2;
+    public int merkNum = 4;
+    private int merkValinta = 1;
     
 
     public Muunninohjelma() {
@@ -57,9 +59,9 @@ public class Muunninohjelma extends JFrame{
                 asetusPaneeli.setLayout(new GridLayout(2, 2, 5, 5));
 
                 asetusPaneeli.add(new JLabel("Merkitsevien numeroiden määrä"));
-                String [] merkNumLista = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
-                JComboBox<String> merkNumValikko = new JComboBox<String>(merkNumLista);
-                merkNumValikko.setSelectedIndex(3);
+                Integer [] merkNumLista = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+                JComboBox<Integer> merkNumValikko = new JComboBox<Integer>(merkNumLista);
+                merkNumValikko.setSelectedIndex(merkValinta);
                 asetusPaneeli.add(merkNumValikko);
 
                 asetusPaneeli.add(new JLabel("Fonttikoko"));
@@ -75,7 +77,9 @@ public class Muunninohjelma extends JFrame{
                     fonttiValinta = fonttiKokoValikko.getSelectedIndex();//uuden fonttikoon paikka listassa
                     fontti = new Font("dialog", Font.PLAIN, fonttiKoko);//luodaan uusi fontti
                     muutaFontti(keskiPaneeli);//uusi fontti asetetaan kaikkiin keskipaneelissa oleviin komponentteihin
-                                      
+                    
+                    merkNum = merkNumValikko.getItemAt(merkNumValikko.getSelectedIndex());
+                    merkValinta = merkNumValikko.getSelectedIndex();
                 }
             }
         });
@@ -201,4 +205,5 @@ public class Muunninohjelma extends JFrame{
             return null;
         }
     }
+    
 }

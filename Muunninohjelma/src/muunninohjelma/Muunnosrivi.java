@@ -32,7 +32,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
         vasenPaneeli.setBackground(Color.WHITE);
         vasenPaneeli.setBorder(raja);
         
-        NumberFormat format = new DecimalFormat("###.####");
+        NumberFormat format = new DecimalFormat("###.#####");
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Double.class);
         formatter.setAllowsInvalid(true);
@@ -162,20 +162,6 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
             }       
         });
         
-        alkuYksikkoValikko.addPopupMenuListener(new PopupMenuListener(){
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {                
-            }
-            
-            @Override
-             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                muunnos();
-            }
-
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {                
-            }       
-        });
                
         add(oikeaPaneeli);
 
@@ -336,10 +322,8 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                     default: 
                         loppuArvo = 0;
                         break;
-                }
-        //lopputulos näytetään käyttäjälle halutulla tarkkuudella
+                } 
         loppuArvoKentta.setText(String.format("%.4f", (double)loppuArvo));
-
     } 
     
     //ilmoituksen näyttäminen rivin poistosta ja kumoamistoiminto
