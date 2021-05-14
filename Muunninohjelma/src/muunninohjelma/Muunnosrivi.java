@@ -87,6 +87,13 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
 
         //loppuarvon yksikön valinta
         loppuYksikkoValikko = new JComboBox<String>();
+        
+        //loppuyksikkövalikko alkutilanteessa
+        loppuYksikkoValikko.addItem("   metri");
+        loppuYksikkoValikko.addItem("   senttimetri");
+        loppuYksikkoValikko.addItem("   maili");
+        loppuYksikkoValikko.addItem("   jalka");
+        loppuYksikkoValikko.addItem("   tuuma");
 
         //loppuyksikkövalikon muokkaus valitun alkuyksikön perusteella
         alkuYksikkoValikko.addActionListener(new ActionListener(){
@@ -214,6 +221,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
     } 
     
     public void muunnos(){
+        if(!alkuArvoKentta.getText().isEmpty()){
         double arvo = (double)alkuArvoKentta.getValue();
         double valiArvo = 0;
         double loppuArvo = 0;
@@ -339,7 +347,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                 }
         //lopputulos näytetään käyttäjälle halutulla tarkkuudella
         loppuArvoKentta.setText(String.format("%.4f", (double)loppuArvo));
-
+        }
     } 
     
     //ilmoituksen näyttäminen rivin poistosta ja kumoamistoiminto
