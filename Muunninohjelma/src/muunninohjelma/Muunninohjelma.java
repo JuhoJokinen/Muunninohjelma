@@ -5,14 +5,16 @@ import javax.swing.*;
 import java.awt.*;           
 import java.awt.event.*;    
 import javax.swing.border.Border;
+import java.util.ArrayList;
 
 public class Muunninohjelma extends JFrame{
     
     private static Point point = new Point();
     private Font fontti = new Font("dialog", Font.PLAIN, 12);
     private int fonttiValinta = 2;
-    public int merkNum = 4;
-    private int merkValinta = 1;
+    private int merkNumValinta = 3;
+    private ArrayList<Muunnosrivi> rivit = new ArrayList<Muunnosrivi>();
+
     
 
     public Muunninohjelma() {
@@ -61,7 +63,8 @@ public class Muunninohjelma extends JFrame{
                 asetusPaneeli.add(new JLabel("Merkitsevien numeroiden määrä"));
                 Integer [] merkNumLista = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
                 JComboBox<Integer> merkNumValikko = new JComboBox<Integer>(merkNumLista);
-                merkNumValikko.setSelectedIndex(merkValinta);
+                merkNumValikko.setSelectedIndex(merkNumValinta);
+
                 asetusPaneeli.add(merkNumValikko);
 
                 asetusPaneeli.add(new JLabel("Fonttikoko"));
@@ -77,9 +80,12 @@ public class Muunninohjelma extends JFrame{
                     fonttiValinta = fonttiKokoValikko.getSelectedIndex();//uuden fonttikoon paikka listassa
                     fontti = new Font("dialog", Font.PLAIN, fonttiKoko);//luodaan uusi fontti
                     muutaFontti(keskiPaneeli);//uusi fontti asetetaan kaikkiin keskipaneelissa oleviin komponentteihin
-                    
-                    merkNum = merkNumValikko.getItemAt(merkNumValikko.getSelectedIndex());
-                    merkValinta = merkNumValikko.getSelectedIndex();
+
+                    merkNumValinta = merkNumValikko.getSelectedIndex();
+                    for(Muunnosrivi rivi : rivit){
+                        rivi.muutaMerkNum(merkNumValinta+1);
+                    }
+                                      
                 }
             }
         });
@@ -135,8 +141,9 @@ public class Muunninohjelma extends JFrame{
         //komponentin lisääminen dynaamisesti
         lisaaRivi.addActionListener((e) -> {
 
-            JPanel rivi = new Muunnosrivi(frame);
+            Muunnosrivi rivi = new Muunnosrivi(frame, merkNumValinta+1);
             keskiPaneeli.add(rivi);
+            rivit.add(rivi);
 
             keskiPaneeli.add(lisaaRivi);
             keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -160,8 +167,9 @@ public class Muunninohjelma extends JFrame{
         //keskipaneelin layout
         keskiPaneeli.setLayout(new BoxLayout(keskiPaneeli, BoxLayout.PAGE_AXIS));
         keskiPaneeli.add(Box.createVerticalGlue());
-        JPanel rivi = new Muunnosrivi(frame);
+        Muunnosrivi rivi = new Muunnosrivi(frame, merkNumValinta+1);
         keskiPaneeli.add(rivi);
+        rivit.add(rivi);
         keskiPaneeli.add(lisaaRivi);
         keskiPaneeli.add(Box.createRigidArea(new Dimension(0, 50)));
         keskiPaneeli.add(Box.createVerticalGlue());

@@ -22,9 +22,12 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
     public JTextField loppuArvoKentta;
     public JComboBox<String> alkuYksikkoValikko;
     public JComboBox<String> loppuYksikkoValikko;
+    private int merkNum;
     
-    public Muunnosrivi(JFrame paaIkkuna) {
+    public Muunnosrivi(JFrame paaIkkuna, int merkNum_p) {
 
+        merkNum = merkNum_p;
+        
         setBackground(Color.WHITE);
         Border raja = BorderFactory.createLineBorder(Color.BLACK);
 
@@ -330,8 +333,10 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                     default: 
                         loppuArvo = 0;
                         break;
-                } 
-        loppuArvoKentta.setText(String.format("%.4f", (double)loppuArvo));
+
+                }
+        //lopputulos näytetään käyttäjälle halutulla tarkkuudella
+        loppuArvoKentta.setText(String.format("%."+merkNum+"f", (double)loppuArvo));
 
         }
     } 
@@ -383,6 +388,11 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
             };
         }.start();
         
+    }
+    
+    public void muutaMerkNum(int merkNum_p){
+        merkNum = merkNum_p;
+        muunnos();
     }
 
 }
