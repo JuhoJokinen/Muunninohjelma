@@ -38,7 +38,7 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
         vasenPaneeli.setBackground(Color.WHITE);
         vasenPaneeli.setBorder(raja);
         
-        NumberFormat format = new DecimalFormat("###,####");
+        NumberFormat format = new DecimalFormat("###.####");
         NumberFormatter formatter = new NumberFormatter(format);
         formatter.setValueClass(Double.class);
         formatter.setAllowsInvalid(true);
@@ -339,8 +339,8 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                         break;
 
                 } 
-        BigDecimal lopputulos = ((BigDecimal)BigDecimal.valueOf(loppuArvo).setScale(merkNum, RoundingMode.HALF_UP));
         //lopputulos pyöristetään ja näytetään käyttäjälle halutulla tarkkuudella
+        BigDecimal lopputulos = ((BigDecimal)BigDecimal.valueOf(loppuArvo).setScale(merkNum, RoundingMode.HALF_UP));
         loppuArvoKentta.setText(lopputulos.stripTrailingZeros().toPlainString());
 
         }
