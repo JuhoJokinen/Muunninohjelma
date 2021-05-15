@@ -15,8 +15,8 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.*;
+
 
 
 public class Muunnosrivi extends JPanel implements PropertyChangeListener{
@@ -338,9 +338,10 @@ public class Muunnosrivi extends JPanel implements PropertyChangeListener{
                         loppuArvo = 0;
                         break;
 
-                }       
+                } 
+        BigDecimal lopputulos = ((BigDecimal)BigDecimal.valueOf(loppuArvo).setScale(merkNum, RoundingMode.HALF_UP));
         //lopputulos pyöristetään ja näytetään käyttäjälle halutulla tarkkuudella
-        loppuArvoKentta.setText(((BigDecimal)BigDecimal.valueOf(loppuArvo).setScale(merkNum, RoundingMode.HALF_UP)).toString());
+        loppuArvoKentta.setText(lopputulos.stripTrailingZeros().toPlainString());
 
         }
     } 
